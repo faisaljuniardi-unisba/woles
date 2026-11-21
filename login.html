@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <title>Login - Woles FC Player Point System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .login-header p {
+            margin: 8px 0 0 0;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1abc9c;
+            box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #bdc3c7;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(26, 188, 156, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .info-text {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 13px;
+            padding: 15px;
+            background: #ecf0f1;
+            border-radius: 8px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .info-text strong {
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .error-message {
+            display: none;
+            padding: 12px 15px;
+            background: #fee;
+            color: #c33;
+            border-left: 4px solid #c33;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #7f8c8d;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ecf0f1;
+            border-top-color: #1abc9c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .leaderboard-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .leaderboard-link a {
+            color: #1abc9c;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .leaderboard-link a:hover {
+            color: #16a085;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="img/logo.png" alt="Woles FC Logo" onerror="this.style.display='none'">
+                <h1>Woles FC</h1>
+                <p>Player Point System</p>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Masukkan username" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Masukkan password" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span class="loading-spinner" id="spinner" style="display: none;"></span>
+                    <span id="btnText">Login</span>
+                </button>
+
+                <div class="loading" id="loadingText">
+                    Memverifikasi...
+                </div>
+            </form>
+
+            <!-- <div class="info-text">
+                <strong>Demo Login:</strong>
+                Username: <strong>admin</strong><br>
+                Password: <strong>admin123</strong>
+            </div> -->
+
+            <div class="leaderboard-link">
+                <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 13px;">Akses tanpa login:</p>
+                <a href="index.html#dashboard">Lihat Klasemen →</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const loginBtn = document.getElementById('loginBtn');
+            const spinner = document.getElementById('spinner');
+            const btnText = document.getElementById('btnText');
+            
+            // Reset error message
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+            
+            // Validasi input
+            if (!username || !password) {
+                showLoginError('Username dan password tidak boleh kosong');
+                return;
+            }
+            
+            // Disable button & show loading
+            loginBtn.disabled = true;
+            spinner.style.display = 'inline-block';
+            btnText.textContent = 'Memproses...';
+            
+            try {
+                const response = await fetch('auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'login',
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Store user info
+                    localStorage.setItem('user_id', data.user_id);
+                    localStorage.setItem('username', data.username);
+                    localStorage.setItem('role', data.role);
+                    
+                    // Redirect ke halaman utama
+                    window.location.href = 'index.html';
+                } else {
+                    showLoginError(data.error || 'Login gagal');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showLoginError('Terjadi kesalahan: ' + error.message);
+            } finally {
+                // Enable button & hide loading
+                loginBtn.disabled = false;
+                spinner.style.display = 'none';
+                btnText.textContent = 'Login';
+            }
+        }
+        
+        function showLoginError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Selalu validasi ke server; localStorage saja dapat tersisa setelah
+        // session PHP berakhir dan sebelumnya menyebabkan redirect berulang.
+        document.addEventListener('DOMContentLoaded', async function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('expired') === '1') {
+                showLoginError('Session berakhir karena tidak ada aktivitas selama 1 jam. Silakan login kembali.');
+                clearStoredAuth();
+                return;
+            }
+
+            const loggedIn = await checkLoginStatus();
+            if (loggedIn) {
+                window.location.replace('index.html');
+            } else {
+                clearStoredAuth();
+            }
+        });
+    </script>
+</body>
+</html>
