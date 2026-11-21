@@ -1,0 +1,10 @@
+[
+    {
+        "id": 2,
+        "username": "faisal",
+        "password": "$2y$10$uj0YkwFhhZUkVwN14YEfkeGAtdRCt9IDAjrLrXUCJHtgP7GNtMx5W",
+        "name": "Faisal Juniardi",
+        "role": "admin",
+        "created_at": "2026-06-24 15:13:13"
+    }
+]
