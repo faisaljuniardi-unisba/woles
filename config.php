@@ -2,10 +2,10 @@
 // config.php - VERSION WITH UPLOAD CONFIG
 
 return [
-    'host' => 'sql310.infinityfree.com',
-    'dbname' => 'if0_40821708_woles_point',
-    'username' => 'if0_40821708',
-    'password' => 'lvnIeYKV6WLg',
+    'host' => 'localhost',
+    'dbname' => 'woles',
+    'username' => 'root',
+    'password' => '',
     'charset' => 'utf8mb4',
     
     // UPLOAD CONFIGURATION - DITAMBAHKAN
